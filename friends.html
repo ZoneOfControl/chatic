@@ -7,17 +7,44 @@
 <meta property="og:site_name" content="Чатік">
 <meta property="og:title" content="Чатік для чату друзів">
 <meta property="og:description" content="Збирає шашлики, ділить рахунок за піцу, веде цитатник і влаштовує Таємного Санту. Плюс гра в котиків на весь чат.">
+<meta property="og:image" content="https://zoneofcontrol.github.io/chatic/og/friends.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta property="og:url" content="https://zoneofcontrol.github.io/chatic/friends.html">
 <meta name="description" content="Збирає шашлики, ділить рахунок за піцу, веде цитатник і влаштовує Таємного Санту. Плюс гра в котиків на весь чат.">
+<meta name="theme-color" content="#121417">
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script>
+(function () {
+  var tg = window.Telegram && window.Telegram.WebApp;
+  if (!tg || !tg.initData) return;
+  try { tg.ready(); tg.expand(); tg.setHeaderColor("#121417"); tg.setBackgroundColor("#121417"); } catch (e) {}
+  try {
+    if (!localStorage.getItem("chatik-lang")) {
+      var l = ((tg.initDataUnsafe && tg.initDataUnsafe.user) || {}).language_code || "";
+      if (l.indexOf("uk") === 0 || l.indexOf("ru") === 0) localStorage.setItem("chatik-lang", l.slice(0, 2));
+    }
+  } catch (e) {}
+  if (!/(^|\/)(index\.html)?$/.test(location.pathname)) {
+    try { tg.BackButton.show(); tg.BackButton.onClick(function () { location.href = "index.html"; }); } catch (e) {}
+  }
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest && e.target.closest('a[href^="https://t.me/"]');
+    if (a) { e.preventDefault(); tg.openTelegramLink(a.href); }
+  });
+})();
+</script>
 <title>Чатик для чата друзей</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fira+Sans+Extra+Condensed:wght@600;700;800&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap">
 <style>
 /* Layout: приборная панель ночью — хедер-питч, затем «бот-панель» с инлайн-кнопками слева и экран модуля с примером переписки справа */
 :root{
   --asphalt:#121417; --panel:#1b1e23; --panel-2:#23272e; --line:#2f343c;
   --fg:#eceae4; --muted:#9aa0a8; --accent:#ff7aa8; --accent-ink:#15130f;
   --bubble-me:#2c4a37; --me-name:#9fe0b4; --bubble-bot:#262a31; --red:#ff5a4e;
-  --f-display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
+  --f-display:"Fira Sans Extra Condensed","Arial Narrow",Arial,sans-serif;
   --f-body:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
   --f-mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
   color-scheme:dark;
