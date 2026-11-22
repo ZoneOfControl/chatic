@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Чатік">
+<meta property="og:title" content="Набори Чатіка">
+<meta property="og:description" content="17 готових наборів модулів Telegram-бота Чатік під різні чати: панель із кнопками й приклади листування.">
+<meta name="description" content="17 готових наборів модулів Telegram-бота Чатік під різні чати: панель із кнопками й приклади листування.">
+<title>Наборы Чатика</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: витрина наборов — питч с кнопкой «Добавить в чат», затем сетка карточек, у каждой свой цвет набора */
+:root{
+  --asphalt:#121417; --panel:#1b1e23; --panel-2:#23272e; --line:#2f343c;
+  --fg:#eceae4; --muted:#9aa0a8; --accent:#eceae4; --accent-ink:#15130f;
+  --f-display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
+  --f-body:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--asphalt);color:var(--fg);font-family:var(--f-body);font-size:15px;line-height:1.5;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 48px}
+.wrap{max-width:1120px;margin:0 auto}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;letter-spacing:.01em}
+
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-block:18px 0}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.lang{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;flex:none}
+.lang button{appearance:none;border:0;background:var(--panel);color:var(--muted);font:600 13px var(--f-body);padding:7px 14px;cursor:pointer}
+.lang button+button{border-left:1px solid var(--line)}
+.lang button[aria-pressed="true"]{background:var(--fg);color:var(--accent-ink)}
+.lang button:focus-visible{outline:2px solid var(--fg);outline-offset:-2px}
+
+.hero{padding-block:26px 30px;display:grid;grid-template-columns:1.4fr 1fr;gap:32px;align-items:end;border-bottom:1px solid var(--line)}
+.hero h1{font-size:clamp(44px,7vw,78px);line-height:.92;font-weight:800;text-transform:uppercase}
+.spectrum{display:flex;gap:4px;margin-top:18px}
+.spectrum i{flex:1;height:6px;border-radius:3px}
+.hero p.lead{color:var(--muted);font-size:17px;max-width:56ch;margin:16px 0 0}
+.add{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px}
+.add ol{margin:0;padding-left:20px;display:grid;gap:6px;font-size:14px}
+.add .row{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;margin-top:14px}
+.btn{display:inline-block;background:var(--fg);color:var(--accent-ink);font:700 15px var(--f-body);text-decoration:none;padding:11px 18px;border-radius:10px}
+.btn:hover{background:#fff}
+.btn:focus-visible{outline:2px solid var(--fg);outline-offset:3px}
+.handle{font:500 13px var(--f-mono);color:var(--muted);user-select:all}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px;padding-block:28px 0;margin:0;padding-left:0}
+.card{list-style:none}
+.card a,.card .soon{display:flex;flex-direction:column;gap:6px;height:100%;background:var(--panel);border:1px solid var(--line);border-radius:14px;
+  padding:16px;color:var(--fg);text-decoration:none;transition:border-color .15s,transform .15s}
+.card a:hover{border-color:var(--c);transform:translateY(-2px)}
+.card a:focus-visible{outline:2px solid var(--c);outline-offset:2px}
+.card .head{display:flex;align-items:center;gap:10px}
+.card .em{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;font-size:20px;background:var(--panel-2);border:1px solid var(--c);flex:none}
+.card h2{font-size:26px;font-weight:700;text-transform:uppercase;color:var(--c);line-height:1}
+.card p{margin:0;color:var(--muted);font-size:14px;flex:1}
+.card .meta{font:500 12px var(--f-mono);letter-spacing:.06em;color:var(--fg);display:flex;justify-content:space-between}
+.card .soon{opacity:.6}
+@media (prefers-reduced-motion:reduce){.card a{transition:none}.card a:hover{transform:none}}
+
+.foot{margin-top:28px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted);font-size:13.5px;max-width:70ch}
+@media (max-width:860px){.hero{grid-template-columns:1fr;padding-block:20px 24px}}
+</style>
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font-size:14px}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="top">
+    <div class="eyebrow" data-i="eyebrow"></div>
+    <div class="lang" role="group" aria-label="Язык / Мова">
+      <button type="button" id="lang-ru" data-lang="ru">Рус</button>
+      <button type="button" id="lang-uk" data-lang="uk">Укр</button>
+    </div>
+  </div>
+
+  <header class="hero">
+    <div>
+      <h1 data-i="h1"></h1>
+      <div class="spectrum" id="spectrum" aria-hidden="true"></div>
+      <p class="lead" data-i="lead"></p>
+    </div>
+    <div class="add">
+      <ol>
+        <li data-i="s1"></li>
+        <li data-i="s2"></li>
+        <li data-i="s3"></li>
+      </ol>
+      <div class="row">
+        <a class="btn" href="https://t.me/lilchaticbot?startgroup=true" target="_blank" rel="noopener" data-i="btn"></a>
+        <span class="handle">@lilchaticbot</span>
+      </div>
+    </div>
+  </header>
+
+  <ul class="grid" id="grid"></ul>
+
+  <p class="foot" data-i="foot"></p>
+</div>
+
+<script>
+const D = {"cards": [{"key": "moto", "emoji": "🏍", "name": ["Мото", "Мото"], "hook": ["Покатушки, SOS с геолокацией, кофе по трассе", "Покатушки, SOS з геолокацією, кава по трасі"], "accent": "#ffb21f", "n": 22, "url": "moto.html"}, {"key": "friends", "emoji": "👫", "name": ["Друзья", "Друзі"], "hook": ["Шашлыки, долги за пиццу, котики, Санта", "Шашлики, борги за піцу, котики, Санта"], "accent": "#ff7aa8", "n": 35, "url": "friends.html"}, {"key": "family", "emoji": "👪", "name": ["Семья", "Сім'я"], "hook": ["Таблетки бабушке, «все дома?», свет", "Пігулки бабусі, «всі вдома?», світло"], "accent": "#ffa27a", "n": 25, "url": "family.html"}, {"key": "neighbors", "emoji": "🏠", "name": ["Соседи и ОСББ", "Сусіди й ОСББ"], "hook": ["«Коли світло?», сбор на домофон, аварийка", "«Коли світло?», збір на домофон, аварійка"], "accent": "#e7a0ff", "n": 22, "url": "neighbors.html"}, {"key": "community", "emoji": "🏘", "name": ["Большое сообщество", "Велика спільнота"], "hook": ["Капча, ответы #тегами, карма, порядок", "Капча, відповіді #тегами, карма, порядок"], "accent": "#5fd3c4", "n": 21, "url": "community.html"}, {"key": "work", "emoji": "💼", "name": ["Работа", "Робота"], "hook": ["Планёрки, опросы, база ответов", "Планірки, опитування, база відповідей"], "accent": "#6fd39a", "n": 19, "url": "work.html"}, {"key": "study", "emoji": "🎓", "name": ["Учёба", "Навчання"], "hook": ["Пары, дедлайны, очередь на сдачу лаб", "Пари, дедлайни, черга на здачу лаб"], "accent": "#8ab4ff", "n": 20, "url": "study.html"}, {"key": "school", "emoji": "🏫", "name": ["Родители класса", "Батьки класу"], "hook": ["Сборы «сдал», объявления, «что задали?»", "Збори «здав», оголошення, «що задали?»"], "accent": "#ffd45e", "n": 19, "url": "school.html"}, {"key": "hobby", "emoji": "⚽", "name": ["Хобби и спорт", "Хобі й спорт"], "hook": ["Тренировки, челленджи, КБЖУ", "Тренування, челенджі, КБЖВ"], "accent": "#9be36b", "n": 19, "url": "hobby.html"}, {"key": "games", "emoji": "🎮", "name": ["Игры", "Ігри"], "hook": ["Лобби «кто в CS?», ачивки, цитатник", "Лобі «хто в CS?», ачівки, цитатник"], "accent": "#a98bff", "n": 23, "url": "games.html"}, {"key": "pets", "emoji": "🐾", "name": ["Питомцы", "Тварини"], "hook": ["Прививки, прогулки, «потерялся»", "Щеплення, прогулянки, «загубився»"], "accent": "#f7ad6a", "n": 19, "url": "pets.html"}, {"key": "weightloss", "emoji": "⚖️", "name": ["Похудение", "Схуднення"], "hook": ["Вес только в процентах, челленджи", "Вага лише у відсотках, челенджі"], "accent": "#6fe3b0", "n": 19, "url": "weightloss.html"}, {"key": "support", "emoji": "🤍", "name": ["Поддержка", "Підтримка"], "hook": ["Тихое «как ты?», помощь, анонимки", "Тихе «як ти?», допомога, анонімки"], "accent": "#c7b6ff", "n": 19, "url": "support.html"}, {"key": "band", "emoji": "🎸", "name": ["Группа", "Гурт"], "hook": ["Сетлисты, репетиции, кто что несёт", "Сетлисти, репетиції, хто що несе"], "accent": "#ff7b6b", "n": 22, "url": "band.html"}, {"key": "travel", "emoji": "🌍", "name": ["Поездка", "Поїздка"], "hook": ["Кто кому должен, список вещей, места", "Хто кому винен, список речей, місця"], "accent": "#3fc8ff", "n": 21, "url": "travel.html"}, {"key": "volunteers", "emoji": "🤝", "name": ["Волонтёры", "Волонтери"], "hook": ["Сборы, кто что везёт, водители", "Збори, хто що везе, водії"], "accent": "#ffe14d", "n": 20, "url": "volunteers.html"}, {"key": "base", "emoji": "🌐", "name": ["Базовый", "Базовий"], "hook": ["Встречи, опросы, напоминания и порядок", "Зустрічі, опитування, нагадування й порядок"], "accent": "#7cc4ff", "n": 15, "url": "base.html"}], "forms": [["модуль", "модуля", "модулей"], ["модуль", "модулі", "модулів"]], "site": true};
+const UI = {
+  eyebrow:["Telegram-бот · готовые наборы","Telegram-бот · готові набори"],
+  h1:["Чатик<br>для любого чата","Чатік<br>для будь-якого чату"],
+  lead:["17 готовых наборов модулей под разные чаты. Откройте свой: там панель с кнопками, примеры переписки и что умеет каждый модуль.",
+        "17 готових наборів модулів під різні чати. Відкрийте свій: там панель із кнопками, приклади листування і що вміє кожен модуль."],
+  s1:["Добавьте Чатика в чат и дайте права админа.","Додайте Чатіка в чат і дайте права адміна."],
+  s2:["В панели: <strong>Настройки → Пресет</strong>, выберите свой набор.","У панелі: <strong>Налаштування → Пресет</strong>, оберіть свій набір."],
+  s3:["Лишнее выключается кнопкой, «↩️ Отменить» вернёт как было.","Зайве вимикається кнопкою, «↩️ Скасувати» поверне як було."],
+  btn:["➕ Добавить в чат","➕ Додати в чат"],
+  open:["открыть →","відкрити →"],
+  soon:["скоро","незабаром"],
+  foot:["Можно и не выбирать: опишите чат своими словами в панели, и Чатик сам предложит набор. Примеры на страницах показательные, имена выдуманы.",
+        "Можна й не обирати: опишіть чат своїми словами в панелі, і Чатік сам запропонує набір. Приклади на сторінках показові, імена вигадані."],
+  title:["Наборы Чатика","Набори Чатіка"],
+};
+let lang = "ru";
+try { const s = localStorage.getItem("chatik-lang"); if (s === "ru" || s === "uk") lang = s; else if ((navigator.language||"").startsWith("uk")) lang = "uk"; } catch(e) {}
+const L = v => Array.isArray(v) ? v[lang === "uk" ? 1 : 0] : v;
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const plural = (n, f) => { const a = n % 10, b = n % 100; return a === 1 && b !== 11 ? f[0] : a >= 2 && a <= 4 && (b < 12 || b > 14) ? f[1] : f[2]; };
+
+document.getElementById("spectrum").innerHTML = D.cards.map(c => `<i style="background:${c.accent}"></i>`).join("");
+
+function render(){
+  document.documentElement.lang = lang;
+  document.title = L(UI.title);
+  document.querySelectorAll("[data-i]").forEach(el => { el.innerHTML = L(UI[el.dataset.i]); });
+  document.querySelectorAll(".lang button").forEach(b => b.setAttribute("aria-pressed", b.dataset.lang === lang));
+  document.getElementById("grid").innerHTML = D.cards.map(c => {
+    const inner = `<div class="head"><span class="em">${c.emoji}</span><h2>${esc(L(c.name))}</h2></div>
+      <p>${esc(L(c.hook))}</p>
+      <div class="meta"><span>${c.n} ${plural(c.n, L(D.forms))}</span><span>${c.url ? L(UI.open) : L(UI.soon)}</span></div>`;
+    return `<li class="card" style="--c:${c.accent}">` + (c.url
+      ? `<a href="${esc(c.url)}"${D.site ? "" : ' target="_blank" rel="noopener"'}>${inner}</a>`
+      : `<div class="soon">${inner}</div>`) + `</li>`;
+  }).join("");
+}
+document.querySelectorAll(".lang button").forEach(b => b.addEventListener("click", () => {
+  lang = b.dataset.lang; try { localStorage.setItem("chatik-lang", lang); } catch(e) {} render();
+}));
+render();
+</script>
+
+</body>
+</html>

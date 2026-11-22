@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Чатік">
+<meta property="og:title" content="Чатік для чату схуднення">
+<meta property="og:description" content="Вагу пишеш в особисті, а в чаті видно лише відсотки. Челенджі, КБЖВ, ачівки й підтримка без осуду.">
+<meta name="description" content="Вагу пишеш в особисті, а в чаті видно лише відсотки. Челенджі, КБЖВ, ачівки й підтримка без осуду.">
+<title>Чатик для чата похудения</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: приборная панель ночью — хедер-питч, затем «бот-панель» с инлайн-кнопками слева и экран модуля с примером переписки справа */
+:root{
+  --asphalt:#121417; --panel:#1b1e23; --panel-2:#23272e; --line:#2f343c;
+  --fg:#eceae4; --muted:#9aa0a8; --accent:#6fe3b0; --accent-ink:#15130f;
+  --bubble-me:#2c4a37; --me-name:#9fe0b4; --bubble-bot:#262a31; --red:#ff5a4e;
+  --f-display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
+  --f-body:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--asphalt);color:var(--fg);font-family:var(--f-body);font-size:15px;line-height:1.5;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 48px}
+.wrap{max-width:1120px;margin:0 auto}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;letter-spacing:.01em}
+
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-block:18px 0}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);display:flex;gap:10px;align-items:center}
+.eyebrow::before{content:"";width:22px;height:3px;background:var(--accent);border-radius:2px;flex:none}
+.lang{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;flex:none}
+.lang button{appearance:none;border:0;background:var(--panel);color:var(--muted);font:600 13px var(--f-body);padding:7px 14px;cursor:pointer}
+.lang button+button{border-left:1px solid var(--line)}
+.lang button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+.lang button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+
+.hero{padding-block:26px 28px;display:grid;grid-template-columns:1.3fr 1fr;gap:32px;align-items:end;border-bottom:1px solid var(--line)}
+.hero h1{font-size:clamp(44px,7vw,76px);line-height:.92;font-weight:800;text-transform:uppercase}
+.hero h1 em{font-style:normal;color:var(--accent)}
+.hero p.lead{color:var(--muted);font-size:17px;max-width:56ch;margin:16px 0 0}
+.gauge{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.gauge div{background:var(--panel);padding:14px 14px 12px}
+.gauge b{display:block;font-family:var(--f-display);font-size:40px;line-height:1;font-weight:700;font-variant-numeric:tabular-nums}
+.gauge span{font-size:12px;color:var(--muted)}
+
+.how{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding-block:24px;margin:0;padding-left:0}
+.how li{list-style:none;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:flex;gap:12px}
+.how .n{font-family:var(--f-display);font-weight:700;font-size:26px;color:var(--accent);line-height:1}
+.how p{margin:0;font-size:14px}
+.cmds code{font-family:var(--f-mono);font-size:12.5px;background:var(--panel-2);border:1px solid var(--line);padding:1px 6px;border-radius:6px;color:var(--fg)}
+
+.main{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:24px;align-items:start}
+.botpanel{background:var(--panel);border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.bp-head{display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid var(--line);background:var(--panel-2)}
+.ava{width:40px;height:40px;border-radius:50%;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;font-family:var(--f-display);font-weight:800;font-size:20px;flex:none}
+.bp-head b{display:block;font-size:15px}
+.bp-head small{color:var(--muted);font-size:12px}
+.bp-msg{margin:16px;background:var(--bubble-bot);border-radius:14px 14px 14px 4px;padding:12px 14px;font-size:14px}
+.group{padding:4px 16px 14px}
+.group h3{font-family:var(--f-mono);font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:6px 0 8px}
+.kb{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.kb button{appearance:none;border:1px solid var(--line);background:var(--panel-2);color:var(--fg);font:600 14px/1.25 var(--f-body);
+  padding:11px 10px;border-radius:10px;cursor:pointer;text-align:center;transition:background .15s,border-color .15s,transform .1s;position:relative}
+.kb button:hover{border-color:var(--accent)}
+.kb button:active{transform:scale(.98)}
+.kb button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.kb button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.kb button .beta{position:absolute;top:-6px;right:-4px;font:500 9.5px var(--f-mono);background:var(--asphalt);color:var(--accent);border:1px solid var(--accent);border-radius:6px;padding:0 4px;letter-spacing:.05em}
+
+.screen{position:sticky;top:calc(env(safe-area-inset-top,0px) + 16px);background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:22px 22px 20px;min-width:0}
+.screen .cat{font-family:var(--f-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.screen h2{font-size:38px;line-height:1;font-weight:700;margin-top:8px;text-transform:uppercase}
+.screen .pitch{margin:12px 0 0;font-size:16px}
+.points{margin:14px 0 0;padding:0;display:grid;gap:7px}
+.points li{list-style:none;padding-left:22px;position:relative;font-size:14px}
+.points li::before{content:"";position:absolute;left:2px;top:.55em;width:10px;height:3px;border-radius:2px;background:var(--accent)}
+.cmds{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.chat{margin-top:18px;background:var(--asphalt);border:1px solid var(--line);border-radius:14px;padding:14px;display:grid;gap:10px}
+.chat .label{font-family:var(--f-mono);font-size:11px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase}
+.m{max-width:88%;padding:9px 12px;border-radius:14px;font-size:14px;white-space:pre-line;overflow-wrap:anywhere}
+.m .who{display:block;font-size:12px;font-weight:700;color:var(--accent);margin-bottom:2px}
+.m.me{justify-self:end;background:var(--bubble-me);border-bottom-right-radius:4px}
+.m.me .who{color:var(--me-name)}
+.m.bot{justify-self:start;background:var(--bubble-bot);border-bottom-left-radius:4px}
+.m.alert{border:1px solid var(--red)}
+.m.alert .who{color:var(--red)}
+.ikb{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+.ikb span{flex:1 1 auto;text-align:center;font-size:12.5px;font-weight:600;background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:6px 8px}
+.anim .m{animation:pop .35s ease both}
+.anim .m:nth-child(3){animation-delay:.12s}.anim .m:nth-child(4){animation-delay:.24s}.anim .m:nth-child(5){animation-delay:.36s}
+@keyframes pop{from{opacity:.25;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.anim .m{animation:none}.kb button{transition:none}}
+
+.foot{margin-top:28px;padding-top:20px;border-top:1px solid var(--line);display:grid;grid-template-columns:1.4fr 1fr;gap:24px;color:var(--muted);font-size:13.5px}
+.foot strong{color:var(--fg)}
+.cta{background:var(--accent);color:var(--accent-ink);border-radius:14px;padding:16px 18px}
+.cta h3{font-size:24px;text-transform:uppercase;font-weight:800}
+.cta p{margin:6px 0 0;font-size:14px;color:var(--accent-ink)}
+.cta-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;margin-top:12px}
+.cta-btn{display:inline-block;background:var(--asphalt);color:var(--accent);font:700 15px var(--f-body);text-decoration:none;padding:10px 16px;border-radius:10px}
+.cta-btn:hover{background:var(--panel)}
+.cta-btn:focus-visible{outline:2px solid var(--accent-ink);outline-offset:2px}
+.handle{font:500 13px var(--f-mono);color:var(--accent-ink);user-select:all}
+.back{display:inline-block;margin-top:14px;font:600 13px var(--f-body);color:var(--muted);text-decoration:none}
+.back:hover{color:var(--accent)}
+
+@media (max-width:860px){
+  .hero,.main,.foot{grid-template-columns:1fr}
+  .how{grid-template-columns:1fr}
+  .screen{position:static}
+  .hero{padding-block:20px 22px}
+}
+@media (max-width:380px){.kb{grid-template-columns:1fr}}
+</style>
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font-size:14px}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+
+<div class="wrap">
+  <a class="back" id="back" hidden data-i="back"></a>
+  <div class="top">
+    <div class="eyebrow" data-i="eyebrow"></div>
+    <div class="lang" role="group" aria-label="Язык / Мова">
+      <button type="button" id="lang-ru" data-lang="ru">Рус</button>
+      <button type="button" id="lang-uk" data-lang="uk">Укр</button>
+    </div>
+  </div>
+
+  <header class="hero">
+    <div>
+      <h1 data-i="h1"></h1>
+      <p class="lead" data-i="lead"></p>
+    </div>
+    <div class="gauge">
+      <div><b id="g-total"></b><span id="g1"></span></div>
+      <div><b>1</b><span data-i="g2"></span></div>
+      <div><b>3</b><span data-i="g3"></span></div>
+    </div>
+  </header>
+
+  <ol class="how">
+    <li><span class="n">1</span><p data-i="s1"></p></li>
+    <li><span class="n">2</span><p data-i="s2"></p></li>
+    <li><span class="n">3</span><p data-i="s3"></p></li>
+  </ol>
+
+  <main class="main">
+    <section class="botpanel">
+      <div class="bp-head">
+        <div class="ava">Ч</div>
+        <div><b data-i="bot"></b><small data-i="botsub"></small></div>
+      </div>
+      <div class="bp-msg" data-i="bpmsg"></div>
+      <div id="groups"></div>
+    </section>
+
+    <section class="screen" id="screen" aria-live="polite"></section>
+  </main>
+
+  <footer class="foot">
+    <div>
+      <p data-i="f1"></p>
+      <p data-i="f2"></p>
+    </div>
+    <div class="cta">
+      <h3 data-i="ctah"></h3>
+      <p data-i="ctap"></p>
+      <div class="cta-row">
+        <a class="cta-btn" href="https://t.me/lilchaticbot?startgroup=true" target="_blank" rel="noopener" data-i="ctabtn"></a>
+        <span class="handle">@lilchaticbot</span>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<script>
+/* Тексты: строка — одинаково на обоих языках, [ru, uk] — по языкам. Данные собраны генератором. */
+const P = {"ui": {"g1forms": [["модуль", "модуля", "модулей"], ["модуль", "модулі", "модулів"]], "g2": ["кнопка, чтобы включить всё", "кнопка, щоб увімкнути все"], "g3": ["языка: укр, рус, англ", "мови: укр, рос, англ"], "s1": ["Добавьте Чатика в чат и дайте ему права админа.", "Додайте Чатіка в чат і дайте йому права адміна."], "s3": ["Лишнее выключается кнопкой в панели. Передумали — «↩️ Отменить» вернёт как было.", "Зайве вимикається кнопкою в панелі. Передумали — «↩️ Скасувати» поверне як було."], "bot": ["Чатик", "Чатік"], "botsub": ["бот · панель модулей", "бот · панель модулів"], "f1": ["<strong>Пометка «бета»</strong> у модуля значит, что он новый и сейчас открыт чатам бета-теста. Заявка подаётся кнопкой «Бета-тест» в панели.", "<strong>Позначка «бета»</strong> біля модуля означає, що він новий і зараз відкритий чатам бета-тесту. Заявка — кнопкою «Бета-тест» у панелі."], "f2": ["Примеры переписки на этой странице показательные: имена выдуманы, формат ответов как у Чатика.", "Приклади листування на цій сторінці показові: імена вигадані, формат відповідей як у Чатіка."], "ctah": ["Позовите Чатика в свой чат", "Покличте Чатіка у свій чат"], "example": ["Как это выглядит в чате", "Як це виглядає в чаті"], "beta": "бета", "ctabtn": ["➕ Добавить в чат", "➕ Додати в чат"], "back": ["← Все наборы Чатика", "← Усі набори Чатіка"], "title": ["Чатик для чата похудения", "Чатік для чату схуднення"], "eyebrow": ["Telegram-бот для марафонов и групп", "Telegram-бот для марафонів і груп"], "h1": ["Чатик<br>для <em>чата похудения</em>", "Чатік<br>для <em>чату схуднення</em>"], "lead": ["Вес пишешь в личку, а в чате видны только проценты. Челленджи, КБЖУ, ачивки и поддержка без осуждения. Ниже его панель: нажмите на любую кнопку и посмотрите, как модуль выглядит в чате.", "Вагу пишеш в особисті, а в чаті видно лише відсотки. Челенджі, КБЖВ, ачівки й підтримка без осуду. Нижче його панель: натисніть будь-яку кнопку й подивіться, як модуль виглядає в чаті."], "g1tail": ["в наборе «Похудение»", "в наборі «Схуднення»"], "s2": ["В панели: <strong>Настройки → Пресет → ⚖️ Похудение</strong>. Включатся все модули ниже и заботливый характер.", "У панелі: <strong>Налаштування → Пресет → ⚖️ Схуднення</strong>. Увімкнуться всі модулі нижче й турботливий характер."], "bpmsg": ["⚖️ Набор «Похудение». Выберите модуль, чтобы посмотреть, что он умеет:", "⚖️ Набір «Схуднення». Оберіть модуль, щоб подивитися, що він уміє:"], "ctap": ["Добавьте его кнопкой ниже, а я помогу настроить набор «Похудение» под ваш чат.", "Додайте його кнопкою нижче, а я допоможу налаштувати набір «Схуднення» під ваш чат."]}, "groups": [{"title": ["Прогресс", "Прогрес"], "items": ["weight", "challenges", "achievements", "nutrition"]}, {"title": ["Режим", "Режим"], "items": ["reminders", "events", "polls", "weather"]}, {"title": ["Чатик-помощник", "Чатік-помічник"], "items": ["ai", "replyai", "mynotes", "names"]}, {"title": ["Поддержка", "Підтримка"], "items": ["people", "mentions", "whisper"]}, {"title": ["Порядок в чате", "Порядок у чаті"], "items": ["moderation", "stats", "feedback", "adminkit"]}], "mods": {"weight": {"btn": ["⚖️ Вес: только проценты", "⚖️ Вага: лише відсотки"], "title": ["Вес: только проценты", "Вага: лише відсотки"], "beta": true, "pitch": ["Вес пишешь Чатику в личку, килограммы никто не видит. В чате только проценты от старта и за месяц.", "Вагу пишеш Чатіку в особисті, кілограмів ніхто не бачить. У чаті лише відсотки від старту й за місяць."], "points": [["/weight 82.4 — в личку", "/weight 82.4 — в особисті"], ["/weight on — участвовать в рейтинге", "/weight on — брати участь у рейтингу"], ["Итоги недели по понедельникам", "Підсумки тижня щопонеділка"]], "cmds": ["/weight"], "chat": [{"me": 1, "who": "Оля", "t": "/weight 68.2"}, {"who": ["Чатик · в личке", "Чатік · в особистих"], "t": ["⚖️ Записал. В чат уйдут только проценты.", "⚖️ Записав. У чат підуть лише відсотки."]}, {"who": ["Чатик", "Чатік"], "t": ["⚖️ Итоги недели\n1. Оля — −6.2% от старта\n2. Дима — −4.8%\n3. Катя — −3.1%", "⚖️ Підсумки тижня\n1. Оля — −6.2% від старту\n2. Діма — −4.8%\n3. Катя — −3.1%"]}]}, "challenges": {"btn": ["🏁 Челленджи", "🏁 Челенджі"], "title": ["Челленджи", "Челенджі"], "pitch": ["Общий челлендж с отметками, сериями и итогом. Отчёты фото с #челендж, напоминание в 21:00.", "Спільний челендж із відмітками, серіями й підсумком. Звіти фото з #челендж, нагадування о 21:00."], "points": [["/challenge 30 Без сахара", "/challenge 30 Без цукру"], ["Кнопки «Участвую» и «Сделал сегодня»", "Кнопки «Беру участь» і «Зробив сьогодні»"], ["/challenges — активные", "/challenges — активні"]], "cmds": ["/challenge", "/challenges"], "chat": [{"me": 1, "who": "Катя", "t": ["/challenge 30 Без сахара", "/challenge 30 Без цукру"]}, {"who": ["Чатик", "Чатік"], "t": ["🏁 Челлендж «Без сахара» · 30 дней\n👥 Участвуют 6 · день 1", "🏁 Челендж «Без цукру» · 30 днів\n👥 Беруть участь 6 · день 1"], "kb": [["🙋 Участвую", "🙋 Беру участь"], ["✅ Сделал сегодня", "✅ Зробив сьогодні"]]}]}, "achievements": {"btn": ["🏅 Ачивки", "🏅 Ачівки"], "title": ["Ачивки", "Ачівки"], "pitch": ["70 ачивок за активность в чате: с уровнями 🥉🥈🥇 и тайными. Админы выдают свои награды.", "70 ачівок за активність у чаті: з рівнями 🥉🥈🥇 і таємними. Адміни видають свої нагороди."], "points": [["/achievements — свои (ответом — чужие)", "/achievements — свої (відповіддю — чужі)"], ["/award @ник 🎤 Название — награда от админа", "/award @нік 🎤 Назва — нагорода від адміна"]], "cmds": ["/achievements", "/award"], "chat": [{"me": 1, "who": "Оля", "t": "/achievements"}, {"who": ["Чатик", "Чатік"], "t": ["🏅 Ачивки Оли: 14 из 70\n🥇 Душа компании\n🥈 Ранняя пташка\n🤫 тайная: ???", "🏅 Ачівки Олі: 14 з 70\n🥇 Душа компанії\n🥈 Рання пташка\n🤫 таємна: ???"]}]}, "nutrition": {"btn": ["🥗 КБЖУ", "🥗 КБЖВ"], "title": ["КБЖУ", "КБЖВ"], "pitch": ["Калории, белки, жиры и углеводы любого продукта на 100 г.", "Калорії, білки, жири й вуглеводи будь-якого продукту на 100 г."], "points": [["«КБЖУ банан»", "«КБЖУ банан»"], ["«калории куриная грудка»", "«калорії куряче філе»"]], "cmds": [], "chat": [{"me": 1, "who": "Оля", "t": ["КБЖУ банан", "КБЖУ банан"]}, {"who": ["Чатик", "Чатік"], "t": ["🍌 Банан, 100 г: 89 ккал · Б 1.1 · Ж 0.3 · У 22.8", "🍌 Банан, 100 г: 89 ккал · Б 1.1 · Ж 0.3 · В 22.8"]}]}, "reminders": {"btn": ["⏰ Напоминания", "⏰ Нагадування"], "title": ["Напоминания", "Нагадування"], "pitch": ["Напомнит словами или командой, умеет повторы.", "Нагадає словами чи командою, вміє повтори."], "points": [["«Чатик, напомни в пятницу в 18 …»", "«Чатіку, нагадай у п'ятницю о 18 …»"], ["/remind 2ч …", "/remind 2г …"], ["Повторы: каждый день, неделю, месяц", "Повтори: щодня, щотижня, щомісяця"], ["/reminders — список", "/reminders — список"]], "cmds": ["/remind", "/reminders"], "chat": [{"me": 1, "who": "Оля", "t": ["Чатик, напоминай каждый день в 11 и 16 выпить воды", "Чатіку, нагадуй щодня об 11 і 16 випити води"]}, {"who": ["Чатик", "Чатік"], "t": ["⏰ Буду напоминать каждый день в 11:00 и 16:00 💧", "⏰ Нагадуватиму щодня об 11:00 і 16:00 💧"]}]}, "events": {"btn": ["📅 События", "📅 Події"], "title": ["События", "Події"], "pitch": ["Встречи и праздники: карточка с кнопками, лимит мест и напоминание за час.", "Зустрічі та свята: картка з кнопками, ліміт місць і нагадування за годину."], "points": [["Кнопки «Иду / Может / Не иду»", "Кнопки «Іду / Можливо / Не йду»"], ["Очередь, если места кончились", "Черга, якщо місця скінчилися"], ["Перенос и отмена: /event_move, /event_cancel", "Перенесення й скасування: /event_move, /event_cancel"]], "cmds": ["/event", "/events"], "chat": [{"me": 1, "who": "Катя", "t": ["/event сб 9:00 Ходьба 7 км по набережной 20", "/event сб 9:00 Ходьба 7 км набережною 20"]}, {"who": ["Чатик", "Чатік"], "t": ["📅 Ходьба 7 км по набережной · суббота, 9:00\n👥 Идут 10 из 20", "📅 Ходьба 7 км набережною · субота, 9:00\n👥 Ідуть 10 з 20"], "kb": [["✅ Иду", "✅ Іду"], ["🤔 Может", "🤔 Можливо"]]}]}, "polls": {"btn": ["📊 Опросы с таймером", "📊 Опитування з таймером"], "title": ["Опросы с таймером", "Опитування з таймером"], "pitch": ["Опрос закрывается сам, Чатик пишет итог. Не нужно никого дёргать «ну что, голосуем?».", "Опитування закривається саме, Чатік пише підсумок. Не треба нікого смикати «ну що, голосуємо?»."], "points": [["/poll 2ч Вопрос | A | B", "/poll 2г Питання | A | B"], ["Итог приходит в чат автоматически", "Підсумок приходить у чат автоматично"]], "cmds": ["/poll"], "chat": [{"me": 1, "who": "Катя", "t": ["/poll 2ч Следующий челлендж? | Без сладкого | 10 000 шагов", "/poll 2г Наступний челендж? | Без солодкого | 10 000 кроків"]}, {"who": ["Чатик", "Чатік"], "t": ["📊 Опрос закрыт. Итог:\nБез сладкого — 6\n10 000 шагов — 11", "📊 Опитування закрите. Підсумок:\nБез солодкого — 6\n10 000 кроків — 11"]}]}, "weather": {"btn": "🌤 Погода", "title": "Погода", "pitch": ["Сводка погоды в любом городе, командой или просто словами.", "Зведення погоди в будь-якому місті, командою або просто словами."], "points": [["/weather Николаев", "/weather Миколаїв"], ["«погода Очаков» без слеша", "«погода Очаків» без слеша"]], "cmds": ["/weather"], "chat": [{"me": 1, "who": ["Дима", "Діма"], "t": ["погода Николаев", "погода Миколаїв"]}, {"who": ["Чатик", "Чатік"], "t": ["🌤 Николаев: +14°, ветер 6 м/с, без осадков до вечера.", "🌤 Миколаїв: +14°, вітер 6 м/с, без опадів до вечора."]}]}, "ai": {"btn": ["🧠 Умный собеседник", "🧠 Розумний співрозмовник"], "title": ["Умный собеседник", "Розумний співрозмовник"], "pitch": ["Отвечает, когда к нему обращаются: подскажет, объяснит, поддержит разговор. Характер чата задаёт админ.", "Відповідає, коли до нього звертаються: підкаже, пояснить, підтримає розмову. Характер чату задає адмін."], "points": [["Обращение «Чатик, …» или ответом на его сообщение", "Звернення «Чатіку, …» або відповіддю на його повідомлення"], ["4 готовых характера: дружелюбный, заботливый, деловой, весёлый", "4 готові характери: дружній, турботливий, діловий, веселий"]], "cmds": [], "chat": [{"me": 1, "who": ["Ира", "Іра"], "t": ["Чатик, что съесть на ужин до 400 ккал?", "Чатіку, що з'їсти на вечерю до 400 ккал?"]}, {"who": ["Чатик", "Чатік"], "t": ["Запечённая куриная грудка 150 г с овощами и ложкой оливкового масла — около 350 ккал. Сытно и много белка.", "Запечене куряче філе 150 г з овочами й ложкою оливкової олії — близько 350 ккал. Ситно й багато білка."]}]}, "replyai": {"btn": ["🪄 Реплай-действия", "🪄 Реплай-дії"], "title": ["Реплай-действия", "Реплай-дії"], "beta": true, "pitch": ["Ответьте на сообщение одним словом: «это правда?», «объясни», «опрос» или «mp3».", "Дайте відповідь на повідомлення одним словом: «це правда?», «поясни», «опитування» або «mp3»."], "points": [["«это правда?» — проверка факта", "«це правда?» — перевірка факту"], ["«объясни» — простыми словами, читает ссылки", "«поясни» — простими словами, читає посилання"], ["«опрос» — сразу опрос из сообщения", "«опитування» — одразу опитування з повідомлення"], ["«mp3» — аудио из видео по ссылке", "«mp3» — аудіо з відео за посиланням"]], "cmds": [], "chat": [{"who": ["Дима", "Діма"], "t": ["Мёд вообще никогда не портится", "Мед узагалі ніколи не псується"]}, {"me": 1, "who": ["Оля ↩︎ Дима", "Оля ↩︎ Діма"], "t": ["это правда?", "це правда?"]}, {"who": ["Чатик", "Чатік"], "t": ["🔎 В целом да: в закрытой банке мёд хранится годами. Со временем он засахаривается, но это не порча.", "🔎 Загалом так: у закритій банці мед зберігається роками. З часом він зацукровується, але це не псування."]}]}, "mynotes": {"btn": ["🗒 Личные заметки", "🗒 Особисті нотатки"], "title": ["Личные заметки", "Особисті нотатки"], "beta": true, "pitch": ["Запись прямо из чата, которую видишь только ты.", "Запис просто з чату, який бачиш лише ти."], "points": [["«Чатик, запиши мне …» или /note", "«Чатіку, запиши мені …» або /note"], ["/my_notes в личке", "/my_notes в особистих"]], "cmds": ["/note", "/my_notes"], "chat": [{"me": 1, "who": "Олег", "t": ["Чатик, запиши мне: купить батарейки к фонарику", "Чатіку, запиши мені: купити батарейки до ліхтарика"]}, {"who": ["Чатик", "Чатік"], "t": ["🗒 Записал. Заметку видишь только ты.", "🗒 Записав. Нотатку бачиш лише ти."]}]}, "names": {"btn": ["✨ Генератор названий", "✨ Генератор назв"], "title": ["Генератор названий", "Генератор назв"], "beta": true, "pitch": ["Название для чата, ветки или события: 5 вариантов, админ выбирает, Чатик переименовывает.", "Назва для чату, гілки чи події: 5 варіантів, адмін обирає, Чатік перейменовує."], "points": [["«Чатик, придумай название для ветки про …»", "«Чатіку, придумай назву для гілки про …»"]], "cmds": [], "chat": [{"me": 1, "who": ["Саша", "Сашко"], "t": ["Чатик, придумай название для нашего чата", "Чатіку, придумай назву для нашого чату"]}, {"who": ["Чатик", "Чатік"], "t": ["Выбирайте:", "Обирайте:"], "kb": [["🌊 Николаевцы на связи", "🌊 Миколаївці на зв'язку"], ["⚓ Корабельный двор", "⚓ Корабельний двір"], ["🌉 Между Бугом и Ингулом", "🌉 Між Бугом та Інгулом"]]}]}, "people": {"btn": "👥 Люди", "title": "Люди", "beta": true, "pitch": ["Кто чем полезен в чате, карточки участников и знакомство с новичками.", "Хто чим корисний у чаті, картки учасників і знайомство з новачками."], "points": [["/about — о себе", "/about — про себе"], ["/skills — что умею", "/skills — що вмію"], ["/who_can — кто умеет", "/who_can — хто вміє"], ["/me — карточка участника", "/me — картка учасника"]], "cmds": ["/about", "/skills", "/who_can", "/me"], "chat": [{"me": 1, "who": ["Ира", "Іра"], "t": ["/who_can фото", "/who_can фото"]}, {"who": ["Чатик", "Чатік"], "t": ["📷 Фотографируют: Катя, Дима\nНапишите им в личку или ответом здесь.", "📷 Фотографують: Катя, Діма\nНапишіть їм в особисті або відповіддю тут."]}]}, "mentions": {"btn": ["🔔 Упоминания", "🔔 Згадки"], "title": ["Упоминания без тега", "Згадки без тегу"], "beta": true, "pitch": ["Если о тебе пишут по имени без @, Чатик шепнёт в личку. Есть тихие часы.", "Якщо про тебе пишуть на ім'я без @, Чатік шепне в особисті. Є тихі години."], "points": ["/mentions on", ["/quiet 23-8 — ночью не беспокоить", "/quiet 23-8 — уночі не турбувати"]], "cmds": ["/mentions", "/quiet"], "chat": [{"who": ["Чатик · в личке", "Чатік · в особистих"], "t": ["🔔 О тебе написали в чате:\n«…спросите у Оли, она точно знает»", "🔔 Про тебе написали в чаті:\n«…спитайте в Олі, вона точно знає»"]}]}, "whisper": {"btn": ["🤫 Шёпот", "🤫 Шепіт"], "title": ["Шёпот", "Шепіт"], "beta": true, "pitch": ["Сообщение в общем чате, которое прочитает только адресат.", "Повідомлення в спільному чаті, яке прочитає лише адресат."], "points": [["Набрать «@бот текст @ник»", "Набрати «@бот текст @нік»"], ["Остальные видят только «Шёпот для @ника»", "Інші бачать лише «Шепіт для @ніка»"]], "cmds": [["@бот текст @ник", "@бот текст @нік"]], "chat": [{"who": ["Чатик", "Чатік"], "t": ["🤫 Шёпот для @olya", "🤫 Шепіт для @olya"], "kb": [["👁 Прочитать", "👁 Прочитати"]]}]}, "moderation": {"btn": ["🛡 Модерация", "🛡 Модерація"], "title": ["Модерация", "Модерація"], "pitch": ["Капча и приветствие новичков, защита от спама и налётов, бан, мут и преды. Важный закреп Чатик сам возвращает наверх.", "Капча й привітання новачків, захист від спаму та навал, бан, мут і попередження. Важливий закріп Чатік сам повертає нагору."], "points": [["Капча и антирейд для новичков", "Капча й антирейд для новачків"], ["Автомодерация: ссылки, флуд, капс, стоп-слова", "Автомодерація: посилання, флуд, капс, стоп-слова"], ["«бан», «мут 2ч», «варн» без слеша — для админов", "«бан», «мут 2г», «варн» без слеша — для адмінів"], "/rules, /report, /modlog"], "cmds": ["/ban", "/mute", "/warn", "/rules", "/report", "/pin_keep"], "chat": [{"who": ["Чатик", "Чатік"], "t": ["👋 Привет, Женя! Нажми кнопку, чтобы писать в чат. Правила: /rules", "👋 Привіт, Женю! Натисни кнопку, щоб писати в чат. Правила: /rules"], "kb": ["✅ Я не бот"]}, {"who": ["Чатик", "Чатік"], "t": ["🧹 Удалил рекламную ссылку от нового участника.", "🧹 Видалив рекламне посилання від нового учасника."]}]}, "stats": {"btn": "📊 Статистика", "title": "Статистика", "pitch": ["Своя статистика и топ месяца. По запросу — недельная сводка по воскресеньям.", "Своя статистика й топ місяця. За запитом — тижневе зведення щонеділі."], "points": [["/stats — моя за месяц и год", "/stats — моя за місяць і рік"], ["/top — топ месяца", "/top — топ місяця"]], "cmds": ["/stats", "/top"], "chat": [{"me": 1, "who": "Оля", "t": "/top"}, {"who": ["Чатик", "Чатік"], "t": ["🏆 Топ ноября\n1. Саша — 1 240\n2. Дима — 980\n3. Оля — 870", "🏆 Топ листопада\n1. Сашко — 1 240\n2. Діма — 980\n3. Оля — 870"]}]}, "feedback": {"btn": ["📬 Жалобы и предложения", "📬 Скарги й пропозиції"], "title": ["Книга жалоб и предложений", "Книга скарг і пропозицій"], "pitch": ["Участники предлагают идеи и жалуются, админы видят список.", "Учасники пропонують ідеї й скаржаться, адміни бачать список."], "points": [["/idea или «Чатик, предлагаю …»", "/idea або «Чатіку, пропоную …»"], ["/ideas — список для админов", "/ideas — список для адмінів"]], "cmds": ["/idea", "/ideas"], "chat": [{"me": 1, "who": "Женя", "t": ["Чатик, предлагаю раз в месяц встречаться офлайн", "Чатіку, пропоную раз на місяць зустрічатися офлайн"]}, {"who": ["Чатик", "Чатік"], "t": ["📬 Записал идею №12. Админы увидят.", "📬 Записав ідею №12. Адміни побачать."]}]}, "adminkit": {"btn": ["🧰 Админам", "🧰 Адмінам"], "title": ["Инструменты админов", "Інструменти адмінів"], "beta": true, "pitch": ["Анонимная скринька для админов, отчёт недели по воскресеньям, перенос настроек в другой чат и правила, принятые голосованием.", "Анонімна скринька для адмінів, звіт тижня щонеділі, перенесення налаштувань в інший чат і правила, ухвалені голосуванням."], "points": [["/suggest в личке — анонимно админам", "/suggest в особистих — анонімно адмінам"], ["/rule_propose — правило голосованием", "/rule_propose — правило голосуванням"], ["/export · /import — настройки в другой чат", "/export · /import — налаштування в інший чат"], ["Отчёт недели админам по воскресеньям", "Звіт тижня адмінам щонеділі"]], "cmds": ["/suggest", "/rule_propose", "/export", "/import"], "chat": [{"me": 1, "who": "Олег", "t": ["/rule_propose Без рекламы без согласования с админами", "/rule_propose Без реклами без погодження з адмінами"]}, {"who": ["Чатик", "Чатік"], "t": ["🗳 Новое правило?\n«Без рекламы без согласования с админами»\n✅ 14 · ❌ 2\n⏳ до 23.11 20:00", "🗳 Нове правило?\n«Без реклами без погодження з адмінами»\n✅ 14 · ❌ 2\n⏳ до 23.11 20:00"], "kb": ["✅ За", ["❌ Против", "❌ Проти"], ["⛔ Вето (админ)", "⛔ Вето (адмін)"]]}]}}, "site": true, "hub": "index.html"};
+const UI = P.ui, GROUPS = P.groups, M = P.mods;
+
+let lang = "ru";
+try { const s = localStorage.getItem("chatik-lang"); if (s === "ru" || s === "uk") lang = s; else if ((navigator.language||"").startsWith("uk")) lang = "uk"; } catch(e) {}
+
+const L = v => Array.isArray(v) ? v[lang === "uk" ? 1 : 0] : v;
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const plural = (n, f) => { const a = n % 10, b = n % 100; return a === 1 && b !== 11 ? f[0] : a >= 2 && a <= 4 && (b < 12 || b > 14) ? f[1] : f[2]; };
+const groupsEl = document.getElementById("groups");
+const screen = document.getElementById("screen");
+const catOf = {};
+const TOTAL = GROUPS.reduce((s, g) => s + g.items.length, 0);
+const first = GROUPS[0].items[0];
+let current = first;
+document.getElementById("g-total").textContent = TOTAL;
+if (P.hub) { const b = document.getElementById("back"); b.href = P.hub; if (!P.site) { b.target = "_blank"; b.rel = "noopener"; } b.hidden = false; }
+
+function renderPanel(){
+  groupsEl.innerHTML = "";
+  GROUPS.forEach(g => {
+    const sec = document.createElement("div");
+    sec.className = "group";
+    sec.innerHTML = `<h3>${esc(L(g.title))}</h3><div class="kb"></div>`;
+    const kb = sec.querySelector(".kb");
+    g.items.forEach(k => {
+      catOf[k] = g.title;
+      const b = document.createElement("button");
+      b.type = "button"; b.id = "btn-" + k; b.dataset.k = k;
+      b.setAttribute("aria-pressed", k === current);
+      b.innerHTML = esc(L(M[k].btn)) + (M[k].beta ? `<span class="beta">${L(UI.beta)}</span>` : "");
+      b.addEventListener("click", () => {
+        if (location.hash !== "#" + k) location.hash = k; else show(k);
+        if (window.matchMedia("(max-width:860px)").matches) screen.scrollIntoView({behavior:"smooth",block:"start"});
+      });
+      kb.appendChild(b);
+    });
+    groupsEl.appendChild(sec);
+  });
+}
+
+function show(k){
+  k = catOf[k] ? k : first; current = k;
+  const m = M[k];
+  document.querySelectorAll(".kb button").forEach(b => b.setAttribute("aria-pressed", b.dataset.k === k));
+  const chat = m.chat.map(c => {
+    const cls = "m " + (c.me ? "me" : "bot") + (c.alert ? " alert" : "");
+    const kb = c.kb ? `<div class="ikb">${c.kb.map(x => `<span>${esc(L(x))}</span>`).join("")}</div>` : "";
+    return `<div class="${cls}"><span class="who">${esc(L(c.who))}</span>${esc(L(c.t))}${kb}</div>`;
+  }).join("");
+  screen.innerHTML = `
+    <div class="cat">${esc(L(catOf[k]))}${m.beta ? " · " + L(UI.beta) : ""}</div>
+    <h2>${esc(L(m.title))}</h2>
+    <p class="pitch">${esc(L(m.pitch))}</p>
+    <ul class="points">${m.points.map(p => `<li>${esc(L(p))}</li>`).join("")}</ul>
+    ${m.cmds.length ? `<div class="cmds">${m.cmds.map(c => `<code>${esc(L(c))}</code>`).join("")}</div>` : ""}
+    <div class="chat anim"><div class="label">${esc(L(UI.example))}</div>${chat}</div>`;
+}
+
+function setLang(l){
+  lang = l;
+  try { localStorage.setItem("chatik-lang", l); } catch(e) {}
+  document.documentElement.lang = l;
+  document.title = L(UI.title);
+  document.querySelectorAll("[data-i]").forEach(el => { el.innerHTML = L(UI[el.dataset.i]); });
+  document.getElementById("g1").textContent = plural(TOTAL, L(UI.g1forms)) + " " + L(UI.g1tail);
+  document.querySelectorAll(".lang button").forEach(b => b.setAttribute("aria-pressed", b.dataset.lang === l));
+  renderPanel();
+  show(current);
+}
+document.querySelectorAll(".lang button").forEach(b => b.addEventListener("click", () => setLang(b.dataset.lang)));
+
+window.addEventListener("hashchange", () => show(location.hash.slice(1)));
+renderPanel();
+current = catOf[location.hash.slice(1)] ? location.hash.slice(1) : first;
+setLang(lang);
+</script>
+
+</body>
+</html>
