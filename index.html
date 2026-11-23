@@ -16,6 +16,18 @@
 <meta name="theme-color" content="#121417">
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <script>
+// 📤 Поділитися набором: у Telegram — вибір чату (t.me/share), у браузері — системне меню, інакше — копія посилання.
+window.chatikShare = function (url, text, btn, copied) {
+  var tg = window.Telegram && window.Telegram.WebApp;
+  if (tg && tg.initData) {
+    tg.openTelegramLink("https://t.me/share/url?url=" + encodeURIComponent(url) + "&text=" + encodeURIComponent(text));
+    return;
+  }
+  if (navigator.share) { navigator.share({title: text, text: text, url: url}).catch(function () {}); return; }
+  var done = function () { if (!btn) return; var o = btn.innerHTML; btn.innerHTML = copied; setTimeout(function () { btn.innerHTML = o; }, 1600); };
+  if (navigator.clipboard) navigator.clipboard.writeText(url).then(done, function () { prompt("", url); });
+  else prompt("", url);
+};
 (function () {
   var tg = window.Telegram && window.Telegram.WebApp;
   if (!tg || !tg.initData) return;
@@ -76,12 +88,16 @@ h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;letter-spacing:
 .handle{font:500 13px var(--f-mono);color:var(--muted);user-select:all}
 
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px;padding-block:28px 0;margin:0;padding-left:0}
-.card{list-style:none}
+.card{list-style:none;position:relative}
+.card .sh{position:absolute;top:12px;right:12px;appearance:none;border:1px solid var(--line);border-radius:10px;background:var(--panel-2);
+  color:var(--fg);font:600 12px var(--f-body);padding:6px 9px;cursor:pointer;z-index:1}
+.card .sh:hover{border-color:var(--c)}
+.card .sh:focus-visible{outline:2px solid var(--c);outline-offset:2px}
 .card a,.card .soon{display:flex;flex-direction:column;gap:6px;height:100%;background:var(--panel);border:1px solid var(--line);border-radius:14px;
   padding:16px;color:var(--fg);text-decoration:none;transition:border-color .15s,transform .15s}
 .card a:hover{border-color:var(--c);transform:translateY(-2px)}
 .card a:focus-visible{outline:2px solid var(--c);outline-offset:2px}
-.card .head{display:flex;align-items:center;gap:10px}
+.card .head{display:flex;align-items:center;gap:10px;padding-right:38px}
 .card .em{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;font-size:20px;background:var(--panel-2);border:1px solid var(--c);flex:none}
 .card h2{font-size:26px;font-weight:700;text-transform:uppercase;color:var(--c);line-height:1}
 .card p{margin:0;color:var(--muted);font-size:14px;flex:1}
@@ -130,7 +146,7 @@ h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;letter-spacing:
 </div>
 
 <script>
-const D = {"cards": [{"key": "moto", "emoji": "🏍", "name": ["Мото", "Мото"], "hook": ["Покатушки, SOS с геолокацией, кофе по трассе", "Покатушки, SOS з геолокацією, кава по трасі"], "accent": "#ffb21f", "n": 22, "url": "moto.html"}, {"key": "friends", "emoji": "👫", "name": ["Друзья", "Друзі"], "hook": ["Шашлыки, долги за пиццу, котики, Санта", "Шашлики, борги за піцу, котики, Санта"], "accent": "#ff7aa8", "n": 35, "url": "friends.html"}, {"key": "family", "emoji": "👪", "name": ["Семья", "Сім'я"], "hook": ["Таблетки бабушке, «все дома?», свет", "Пігулки бабусі, «всі вдома?», світло"], "accent": "#ffa27a", "n": 25, "url": "family.html"}, {"key": "neighbors", "emoji": "🏠", "name": ["Соседи и ОСББ", "Сусіди й ОСББ"], "hook": ["«Коли світло?», сбор на домофон, аварийка", "«Коли світло?», збір на домофон, аварійка"], "accent": "#e7a0ff", "n": 22, "url": "neighbors.html"}, {"key": "community", "emoji": "🏘", "name": ["Большое сообщество", "Велика спільнота"], "hook": ["Капча, ответы #тегами, карма, порядок", "Капча, відповіді #тегами, карма, порядок"], "accent": "#5fd3c4", "n": 21, "url": "community.html"}, {"key": "work", "emoji": "💼", "name": ["Работа", "Робота"], "hook": ["Планёрки, опросы, база ответов", "Планірки, опитування, база відповідей"], "accent": "#6fd39a", "n": 19, "url": "work.html"}, {"key": "study", "emoji": "🎓", "name": ["Учёба", "Навчання"], "hook": ["Пары, дедлайны, очередь на сдачу лаб", "Пари, дедлайни, черга на здачу лаб"], "accent": "#8ab4ff", "n": 20, "url": "study.html"}, {"key": "hobby", "emoji": "⚽", "name": ["Хобби и спорт", "Хобі й спорт"], "hook": ["Тренировки, челленджи, КБЖУ", "Тренування, челенджі, КБЖВ"], "accent": "#9be36b", "n": 19, "url": "hobby.html"}, {"key": "games", "emoji": "🎮", "name": ["Игры", "Ігри"], "hook": ["Лобби «кто в CS?», ачивки, цитатник", "Лобі «хто в CS?», ачівки, цитатник"], "accent": "#a98bff", "n": 23, "url": "games.html"}, {"key": "pets", "emoji": "🐾", "name": ["Питомцы", "Тварини"], "hook": ["Прививки, прогулки, «потерялся»", "Щеплення, прогулянки, «загубився»"], "accent": "#f7ad6a", "n": 19, "url": "pets.html"}, {"key": "support", "emoji": "🤍", "name": ["Поддержка", "Підтримка"], "hook": ["Тихое «как ты?», помощь, анонимки", "Тихе «як ти?», допомога, анонімки"], "accent": "#c7b6ff", "n": 19, "url": "support.html"}, {"key": "base", "emoji": "🌐", "name": ["Базовый", "Базовий"], "hook": ["Встречи, опросы, напоминания и порядок", "Зустрічі, опитування, нагадування й порядок"], "accent": "#7cc4ff", "n": 15, "url": "base.html"}], "forms": [["модуль", "модуля", "модулей"], ["модуль", "модулі", "модулів"]], "site": true};
+const D = {"cards": [{"key": "moto", "emoji": "🏍", "name": ["Мото", "Мото"], "hook": ["Покатушки, SOS с геолокацией, кофе по трассе", "Покатушки, SOS з геолокацією, кава по трасі"], "accent": "#ffb21f", "n": 22, "url": "moto.html", "share": {"url": "https://zoneofcontrol.github.io/chatic/moto.html", "text": ["🏍 Набор Чатика «Мото»: какие модули включает и как выглядит в чате", "🏍 Набір Чатіка «Мото»: які модулі вмикає і як це виглядає в чаті"]}}, {"key": "friends", "emoji": "👫", "name": ["Друзья", "Друзі"], "hook": ["Шашлыки, долги за пиццу, котики, Санта", "Шашлики, борги за піцу, котики, Санта"], "accent": "#ff7aa8", "n": 35, "url": "friends.html", "share": {"url": "https://zoneofcontrol.github.io/chatic/friends.html", "text": ["👫 Набор Чатика «Друзья»: какие модули включает и как выглядит в чате", "👫 Набір Чатіка «Друзі»: які модулі вмикає і як це виглядає в чаті"]}}, {"key": "family", "emoji": "👪", "name": ["Семья", "Сім'я"], "hook": ["Таблетки бабушке, «все дома?», свет", "Пігулки бабусі, «всі вдома?», світло"], "accent": "#ffa27a", "n": 25, "url": "family.html", "share": {"url": "https://zoneofcontrol.github.io/chatic/family.html", "text": ["👪 Набор Чатика «Семья»: какие модули включает и как выглядит в чате", "👪 Набір Чатіка «Сім'я»: які модулі вмикає і як це виглядає в чаті"]}}, {"key": "neighbors", "emoji": "🏠", "name": ["Соседи и ОСББ", "Сусіди й ОСББ"], "hook": ["«Коли світло?», сбор на домофон, аварийка", "«Коли світло?», збір на домофон, аварійка"], "accent": "#e7a0ff", "n": 22, "url": "neighbors.html", "share": {"url": "https://zoneofcontrol.github.io/chatic/neighbors.html", "text": ["🏠 Набор Чатика «Соседи и ОСББ»: какие модули включает и как выглядит в чате", "🏠 Набір Чатіка «Сусіди й ОСББ»: які модулі вмикає і як це виглядає в чаті"]}}, {"key": "community", "emoji": "🏘", "name": ["Большое сообщество", "Велика спільнота"], "hook": ["Капча, ответы #тегами, карма, порядок", "Капча, відповіді #тегами, карма, порядок"], "accent": "#5fd3c4", "n": 21, "url": "community.html", "share": {"url": "https://zoneofcontrol.github.io/chatic/community.html", "text": ["🏘 Набор Чатика «Большое сообщество»: какие модули включает и как выглядит в чате", "🏘 Набір Чатіка «Велика спільнота»: які модулі вмикає і як це виглядає в чаті"]}}, {"key": "work", "emoji": "💼", "name": ["Работа", "Робота"], "hook": ["Планёрки, опросы, база ответов", "Планірки, опитування, база відповідей"], "accent": "#6fd39a", "n": 19, "url": "work.html", "share": {"url": "https://zoneofcontrol.github.io/chatic/work.html", "text": ["💼 Набор Чатика «Работа»: какие модули включает и как выглядит в чате", "💼 Набір Чатіка «Робота»: які модулі вмикає і як це виглядає в чаті"]}}, {"key": "study", "emoji": "🎓", "name": ["Учёба", "Навчання"], "hook": ["Пары, дедлайны, очередь на сдачу лаб", "Пари, дедлайни, черга на здачу лаб"], "accent": "#8ab4ff", "n": 20, "url": "study.html", "share": {"url": "https://zoneofcontrol.github.io/chatic/study.html", "text": ["🎓 Набор Чатика «Учёба»: какие модули включает и как выглядит в чате", "🎓 Набір Чатіка «Навчання»: які модулі вмикає і як це виглядає в чаті"]}}, {"key": "hobby", "emoji": "⚽", "name": ["Хобби и спорт", "Хобі й спорт"], "hook": ["Тренировки, челленджи, КБЖУ", "Тренування, челенджі, КБЖВ"], "accent": "#9be36b", "n": 19, "url": "hobby.html", "share": {"url": "https://zoneofcontrol.github.io/chatic/hobby.html", "text": ["⚽ Набор Чатика «Хобби и спорт»: какие модули включает и как выглядит в чате", "⚽ Набір Чатіка «Хобі й спорт»: які модулі вмикає і як це виглядає в чаті"]}}, {"key": "games", "emoji": "🎮", "name": ["Игры", "Ігри"], "hook": ["Лобби «кто в CS?», ачивки, цитатник", "Лобі «хто в CS?», ачівки, цитатник"], "accent": "#a98bff", "n": 23, "url": "games.html", "share": {"url": "https://zoneofcontrol.github.io/chatic/games.html", "text": ["🎮 Набор Чатика «Игры»: какие модули включает и как выглядит в чате", "🎮 Набір Чатіка «Ігри»: які модулі вмикає і як це виглядає в чаті"]}}, {"key": "pets", "emoji": "🐾", "name": ["Питомцы", "Тварини"], "hook": ["Прививки, прогулки, «потерялся»", "Щеплення, прогулянки, «загубився»"], "accent": "#f7ad6a", "n": 19, "url": "pets.html", "share": {"url": "https://zoneofcontrol.github.io/chatic/pets.html", "text": ["🐾 Набор Чатика «Питомцы»: какие модули включает и как выглядит в чате", "🐾 Набір Чатіка «Тварини»: які модулі вмикає і як це виглядає в чаті"]}}, {"key": "support", "emoji": "🤍", "name": ["Поддержка", "Підтримка"], "hook": ["Тихое «как ты?», помощь, анонимки", "Тихе «як ти?», допомога, анонімки"], "accent": "#c7b6ff", "n": 19, "url": "support.html", "share": {"url": "https://zoneofcontrol.github.io/chatic/support.html", "text": ["🤍 Набор Чатика «Поддержка»: какие модули включает и как выглядит в чате", "🤍 Набір Чатіка «Підтримка»: які модулі вмикає і як це виглядає в чаті"]}}, {"key": "base", "emoji": "🌐", "name": ["Базовый", "Базовий"], "hook": ["Встречи, опросы, напоминания и порядок", "Зустрічі, опитування, нагадування й порядок"], "accent": "#7cc4ff", "n": 15, "url": "base.html", "share": {"url": "https://zoneofcontrol.github.io/chatic/base.html", "text": ["🌐 Набор Чатика «Базовый»: какие модули включает и как выглядит в чате", "🌐 Набір Чатіка «Базовий»: які модулі вмикає і як це виглядає в чаті"]}}], "forms": [["модуль", "модуля", "модулей"], ["модуль", "модулі", "модулів"]], "site": true};
 const UI = {
   eyebrow:["Telegram-бот · готовые наборы","Telegram-бот · готові набори"],
   h1:["Чатик<br>для любого чата","Чатік<br>для будь-якого чату"],
@@ -145,6 +161,7 @@ const UI = {
   foot:["Можно и не выбирать: опишите чат своими словами в панели, и Чатик сам предложит набор. Примеры на страницах показательные, имена выдуманы.",
         "Можна й не обирати: опишіть чат своїми словами в панелі, і Чатік сам запропонує набір. Приклади на сторінках показові, імена вигадані."],
   title:["Наборы Чатика","Набори Чатіка"],
+  share:["📤 Поделиться","📤 Поділитися"], copied:["✅ Скопировано","✅ Скопійовано"],
 };
 let lang = "ru";
 try { const s = localStorage.getItem("chatik-lang"); if (s === "ru" || s === "uk") lang = s; else if ((navigator.language||"").startsWith("uk")) lang = "uk"; } catch(e) {}
@@ -165,8 +182,14 @@ function render(){
       <div class="meta"><span>${c.n} ${plural(c.n, L(D.forms))}</span><span>${c.url ? L(UI.open) : L(UI.soon)}</span></div>`;
     return `<li class="card" style="--c:${c.accent}">` + (c.url
       ? `<a href="${esc(c.url)}"${D.site ? "" : ' target="_blank" rel="noopener"'}>${inner}</a>`
-      : `<div class="soon">${inner}</div>`) + `</li>`;
+      : `<div class="soon">${inner}</div>`)
+      + (c.url && c.share && window.chatikShare ? `<button type="button" class="sh" data-k="${esc(c.key)}" aria-label="${esc(L(UI.share))}">📤</button>` : "")
+      + `</li>`;
   }).join("");
+  document.querySelectorAll(".card .sh").forEach(b => b.addEventListener("click", () => {
+    const c = D.cards.find(x => x.key === b.dataset.k);
+    chatikShare(c.share.url, L(c.share.text), b, "✅");
+  }));
 }
 document.querySelectorAll(".lang button").forEach(b => b.addEventListener("click", () => {
   lang = b.dataset.lang; try { localStorage.setItem("chatik-lang", lang); } catch(e) {} render();
